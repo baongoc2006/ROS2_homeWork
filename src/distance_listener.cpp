@@ -8,6 +8,13 @@ public:
   {
     // Khai báo parameter threshold với giá trị mặc định 0.5 m
     this->declare_parameter<double>("threshold", 0.5);
+    // Cho phép parameter được set từ bên ngoài
+    this->add_on_set_parameters_callback(
+      [](const std::vector<rclcpp::Parameter> &) {
+        rcl_interfaces::msg::SetParametersResult result;
+        result.successful = true;
+        return result;
+      });
 
     subscription_ = this->create_subscription<std_msgs::msg::Float32>(
       "distance_topic",
